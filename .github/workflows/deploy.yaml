@@ -32,3 +32,14 @@ jobs:
           docker push otaviomedeiros/multi-nginx
           docker push otaviomedeiros/multi-server
           docker push otaviomedeiros/multi-worker
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: multi-docker
+          environment_name: Multidocker-env
+          version_label: ${{ github.sha }}
+          region: us-west-2
+          existing_bucket_name: elasticbeanstalk-us-west-2-910995218760
