@@ -32,8 +32,11 @@ jobs:
           docker push otaviomedeiros/multi-nginx
           docker push otaviomedeiros/multi-server
           docker push otaviomedeiros/multi-worker
+      
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
 
-      - name: Deploy to EB
+      - name: Deploy to EBS
         uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -42,4 +45,5 @@ jobs:
           environment_name: Multidocker-env
           version_label: ${{ github.sha }}
           region: us-west-2
+          deployment_package: deploy.zip
           existing_bucket_name: elasticbeanstalk-us-west-2-910995218760
